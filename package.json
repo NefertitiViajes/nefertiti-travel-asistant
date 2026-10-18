@@ -1,0 +1,10 @@
+{
+  "name": "nefertiti-travel-asistant",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "imapflow": "^1.0.181",
+    "nodemailer": "^7.0.9"
+  }
+}
