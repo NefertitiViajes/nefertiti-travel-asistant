@@ -23,7 +23,7 @@ function buildReview(x){
 
   if(missing.length){
    const destLabel=destination?destination.charAt(0).toUpperCase()+destination.slice(1):'vacanta dorita';
-   draft=`Buna ziua!\n\nSigur, cu drag. Ca sa va pot pregati variante potrivite pentru ${destLabel}, mai am nevoie de cateva detalii:\n\n${missing.map((m,i)=>`${i+1}. ${m.charAt(0).toUpperCase()+m.slice(1)}`).join('\n')}\n\nDupa ce imi trimiteti aceste informatii, verific variantele potrivite pentru dumneavoastra.\n\nCu drag,\nIuliana\nNefertiti Travel`;
+   draft=`Buna ziua!\n\nDesigur. Pentru a va pregati variante potrivite pentru ${destLabel}, mai am nevoie de cateva detalii:\n\n${missing.map((m,i)=>`${i+1}. ${m.charAt(0).toUpperCase()+m.slice(1)}`).join('\n\n')}\n\nDupa ce imi trimiteti aceste informatii, verific variantele potrivite pentru dumneavoastra.\n\nCu drag,\nIuliana\nNefertiti Travel`;
   }
  }
  return {summary,missing,draft};
