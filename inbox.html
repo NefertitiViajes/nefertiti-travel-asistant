@@ -4,14 +4,22 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Inbox Asistenta — Nefertiti Travel</title>
 <style>
-body{font-family:Arial,sans-serif;background:#f5f6f8;margin:0;color:#172033}.wrap{max-width:1100px;margin:40px auto;padding:0 20px}.top{display:flex;justify-content:space-between;align-items:center}.badge{background:#fff3cd;padding:8px 12px;border-radius:20px;font-size:13px}.card{background:white;border:1px solid #e6e8ec;border-radius:16px;padding:22px;margin-top:20px;box-shadow:0 3px 14px rgba(0,0,0,.04)}h1{margin-bottom:6px}h3{margin:0 0 8px}.muted{color:#667085}.empty{text-align:center;padding:55px 20px}.flow{font-size:14px;background:#eef6ff;padding:14px;border-radius:12px;margin-top:18px}.pill{display:inline-block;background:#eef2f6;padding:5px 9px;border-radius:10px;font-size:12px;margin-right:5px}button{border:0;border-radius:9px;padding:10px 14px;margin-right:7px;font-weight:600}.approve{background:#1f7a4d;color:white}.edit{background:#eef2f6}.reject{background:#fff0f0;color:#a12b2b}.buttons{margin-top:16px}.warning{color:#8a5b00;font-size:13px;margin-top:10px}
+body{font-family:Arial,sans-serif;background:#f5f6f8;margin:0;color:#172033}.wrap{max-width:1100px;margin:40px auto;padding:0 20px}.top{display:flex;justify-content:space-between;align-items:center;gap:15px}.badge{background:#fff3cd;padding:8px 12px;border-radius:20px;font-size:13px}.card{background:white;border:1px solid #e6e8ec;border-radius:16px;padding:22px;margin-top:20px;box-shadow:0 3px 14px rgba(0,0,0,.04)}h1{margin-bottom:6px}h3{margin:0 0 8px}.muted{color:#667085}.empty{text-align:center;padding:55px 20px}.flow{font-size:14px;background:#eef6ff;padding:14px;border-radius:12px;margin-top:18px}.pill{display:inline-block;background:#eef2f6;padding:5px 9px;border-radius:10px;font-size:12px;margin-right:5px}button{border:0;border-radius:9px;padding:10px 14px;margin-right:7px;font-weight:600;cursor:pointer}.approve{background:#1f7a4d;color:white}.edit{background:#eef2f6}.reject{background:#fff0f0;color:#a12b2b}.sync{background:#172033;color:white}.buttons{margin-top:16px}.warning{color:#8a5b00;font-size:13px;margin-top:10px}.toolbar{margin-top:18px;display:flex;align-items:center;gap:12px}.status{font-size:13px;color:#667085}
 </style></head>
 <body><div class="wrap">
 <div class="top"><div><h1>Inbox Asistenta Nefertiti Travel</h1><div class="muted">Ciorne si aprobari — nimic nu se trimite fara acordul Iulianei.</div></div><div class="badge">🔒 Aprobare obligatorie</div></div>
 <div class="flow">📩 Email → 🧠 Clasificare → ✍️ Ciorna → 👩 Iuliana aproba → 📤 Trimitere</div>
+<div class="toolbar"><button id="syncBtn" class="sync" onclick="syncLatest()">Sincronizeaza ultimul email</button><span id="syncStatus" class="status">Test controlat: se preia un singur email, fara trimitere.</span></div>
 <div id="list" class="card empty"><h3>Inboxul asistentei este pregatit</h3><p class="muted">Momentan nu exista mesaje salvate pentru analiza. Urmatorul pas este sincronizarea controlata din email.</p><p class="warning">Newsletterele, reclamele si notificarile automate nu vor primi ciorne de raspuns.</p></div>
 </div>
 <script>
+async function syncLatest(){
+ const b=document.getElementById('syncBtn'),s=document.getElementById('syncStatus');
+ b.disabled=true;s.textContent='Sincronizez un singur email...';
+ try{const r=await fetch('/api/sync-latest',{method:'POST'});const d=await r.json();if(!d.ok)throw new Error(d.error||'Eroare');s.textContent='Gata. Emailul a fost preluat. Nu s-a trimis nimic.';await load();}
+ catch(e){s.textContent='Nu am putut sincroniza: '+e.message;}
+ finally{b.disabled=false;}
+}
 async function load(){
  try{
   const r=await fetch('/api/assistant-inbox'); const d=await r.json();
