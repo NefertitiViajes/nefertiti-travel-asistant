@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ro">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inbox Asistenta — Nefertiti Travel</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f5f6f8;margin:0;color:#172033}.wrap{max-width:1100px;margin:40px auto;padding:0 20px}.top{display:flex;justify-content:space-between;align-items:center}.badge{background:#fff3cd;padding:8px 12px;border-radius:20px;font-size:13px}.card{background:white;border:1px solid #e6e8ec;border-radius:16px;padding:22px;margin-top:20px;box-shadow:0 3px 14px rgba(0,0,0,.04)}h1{margin-bottom:6px}h3{margin:0 0 8px}.muted{color:#667085}.empty{text-align:center;padding:55px 20px}.flow{font-size:14px;background:#eef6ff;padding:14px;border-radius:12px;margin-top:18px}.pill{display:inline-block;background:#eef2f6;padding:5px 9px;border-radius:10px;font-size:12px;margin-right:5px}button{border:0;border-radius:9px;padding:10px 14px;margin-right:7px;font-weight:600}.approve{background:#1f7a4d;color:white}.edit{background:#eef2f6}.reject{background:#fff0f0;color:#a12b2b}.buttons{margin-top:16px}.warning{color:#8a5b00;font-size:13px;margin-top:10px}
+</style></head>
+<body><div class="wrap">
+<div class="top"><div><h1>Inbox Asistenta Nefertiti Travel</h1><div class="muted">Ciorne si aprobari — nimic nu se trimite fara acordul Iulianei.</div></div><div class="badge">🔒 Aprobare obligatorie</div></div>
+<div class="flow">📩 Email → 🧠 Clasificare → ✍️ Ciorna → 👩 Iuliana aproba → 📤 Trimitere</div>
+<div id="list" class="card empty"><h3>Inboxul asistentei este pregatit</h3><p class="muted">Momentan nu exista mesaje salvate pentru analiza. Urmatorul pas este sincronizarea controlata din email.</p><p class="warning">Newsletterele, reclamele si notificarile automate nu vor primi ciorne de raspuns.</p></div>
+</div>
+<script>
+async function load(){
+ try{
+  const r=await fetch('/api/assistant-inbox'); const d=await r.json();
+  if(!d.ok||!d.messages?.length)return;
+  document.getElementById('list').className='';
+  document.getElementById('list').innerHTML=d.messages.map(m=>`<div class="card"><div><span class="pill">${esc(m.category||'neclasificat')}</span><span class="pill">${m.needs_reply?'Necesita raspuns':'Nu necesita raspuns'}</span></div><h3>${esc(m.subject||'(fara subiect)')}</h3><div class="muted">${esc(m.sender||'')}</div><p>${esc(m.summary||'')}</p>${m.draft?`<hr><b>Ciorna de raspuns</b><p>${esc(m.draft)}</p><div class="buttons"><button class="approve" disabled>Aprob</button><button class="edit" disabled>Modific</button><button class="reject" disabled>Respinge</button></div><div class="warning">Butoanele sunt dezactivate pana conectam fluxul securizat de aprobare.</div>`:''}</div>`).join('');
+ }catch(e){}
+}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));}load();
+</script></body></html>
